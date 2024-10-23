@@ -1,0 +1,48 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+header {
+    position:fixed;
+    top: 0;
+    background-color: black;
+    border-bottom: 2px solid white;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+#menu {
+    text-decoration: none;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    font-size: 2.3em;
+    text-align: center;
+    color: #fff;
+    width: 20%;
+}
+
+
+
+#NewGame {
+    margin-bottom: 1%;
+    text-decoration: none;
+    text-align: center;
+    color: #fff;
+    font-size: 1.5em;
+    width: 10%;
+}
+
+#menu:hover {
+    color: aqua;
+}
+
+#NewGame:hover {
+    color: aqua;
+}

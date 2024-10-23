@@ -12,6 +12,51 @@
         <link rel="stylesheet" href="/assets/css/Hangman.css">
     </head>
     <body>
+        <header>
+            <a href="/menu" id="menu">H-A-N-G-M-A-N</a>
+            <a href="/game" id="NewGame">New Game</a>
+        </header>
+        <main>
+            <p id="mot">{{.Mot}}</p>
+            {{if .Error}}
+                {{if eq .NbError 1}}
+                    <img id="Error" src="/assets/img/Display/Display1.png" alt="">
+                {{end}}
+                {{if eq .NbError 2}}
+                    <img id="Error" src="/assets/img/Display/Display2.png" alt="">
+                {{end}}
+                {{if eq .NbError 3}}
+                    <img id="Error" src="/assets/img/Display/Display3.png" alt="">
+                {{end}}
+                {{if eq .NbError 4}}
+                    <img id="Error" src="/assets/img/Display/Display4.png" alt="">
+                {{end}}
+                {{if eq .NbError 5}}
+                    <img id="Error" src="/assets/img/Display/Display5.png" alt="">
+                {{end}}
+                {{if eq .NbError 6}}
+                    <img id="Error" src="/assets/img/Display/Display6.png" alt="">
+                {{end}}
+                {{if eq .NbError 7}}
+                    <img id="Error" src="/assets/img/Display/Display7.png" alt="">
+                {{end}}
+                {{if eq .NbError 8}}
+                    <img id="Error" src="/assets/img/Display/Display8.png" alt="">
+                {{end}}
+                {{if eq .NbError 9}}
+                    <img id="Error" src="/assets/img/Display/Display9.png" alt="">
+                {{end}}
+                {{if eq .NbError 10}}
+                    <img id="Error" src="/assets/img/Display/Display10.png" alt="">
+                {{end}}
+                {{if eq .NbError 11}}
+                    <img id="Error" src="/assets/img/Display/Display11.png" alt="">
+                {{end}}
+            {{end}}
+
+            <a href="/game/mot" id="FindWord">Find a word</a>
+            <a href="/game/lettre" id="FindLetter">Find a letter</a>
+        </main>
         
         
         <script src="" async defer></script>
