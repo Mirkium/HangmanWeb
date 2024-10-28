@@ -32,7 +32,24 @@ main {
     height: 300px;
 }
 
-#FindWord, #FindLetter {
+#InputError {
+    background-color: #fff;
+    border: #000 2px solid;
+    border-radius: 30px;
+}
+
+#InputError > p {
+    color: red;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
     font-size: 1.3em;
     margin-top: 10px;
     text-decoration: none;
@@ -41,13 +58,7 @@ main {
     color: #000;
 }
 
-#FindWord:hover {
+button:hover {
     color: greenyellow;
-    border: greenyellow solid 2px;
-}
-
-#FindLetter:hover {
-    
-    color: greenyellow;
-    border: greenyellow solid 2px;
+    border-color: greenyellow;
 }

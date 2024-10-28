@@ -53,6 +53,17 @@
                     <img class="Error" src="/assets/img/Display/Display11.png" alt="">
                 {{end}}
             {{end}}
+            <div class="test">
+                <p>test</p>
+            </div>
+            {{if .IfError}}
+                <div id="InputError">
+                    <p>{{.Error}}</p>
+                </div>
+            {{end}}
+            <div class="form">
+                <p>form</p>
+            </div>
             <form action="/hangman/treatment" method="post">
                 <label for="word">Word</label>
                 <input type="text" name="word" id="word">
