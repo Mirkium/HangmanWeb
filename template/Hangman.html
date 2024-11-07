@@ -10,59 +10,36 @@
         <link rel="stylesheet" href="/assets/css/partials/Header.css">
         <link rel="stylesheet" href="/assets/css/partials/Footer.css">
         <link rel="stylesheet" href="/assets/css/Hangman.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Tiny5&display=swap" rel="stylesheet"> 
     </head>
     <body>
-        <header>
+        <header class="header">
             <a href="/menu" id="menu">H-A-N-G-M-A-N</a>
             <a href="/game" id="NewGame">New Game</a>
         </header>
         <main>
-            <p id="mot">{{.Mot}}</p>
-            {{if .Error}}
-                {{if eq .NbError 1}}
-                    <img class="Error" src="/assets/img/Display/Display1.png" alt="">
+            <div id="mot">
+                {{range .Mot}}
+                    <p>{{.}}</p>
                 {{end}}
-                {{if eq .NbError 2}}
-                    <img class="Error" src="/assets/img/Display/Display2.png" alt="">
-                {{end}}
-                {{if eq .NbError 3}}
-                    <img class="Error" src="/assets/img/Display/Display3.png" alt="">
-                {{end}}
-                {{if eq .NbError 4}}
-                    <img class="Error" src="/assets/img/Display/Display4.png" alt="">
-                {{end}}
-                {{if eq .NbError 5}}
-                    <img class="Error" src="/assets/img/Display/Display5.png" alt="">
-                {{end}}
-                {{if eq .NbError 6}}
-                    <img class="Error" src="/assets/img/Display/Display6.png" alt="">
-                {{end}}
-                {{if eq .NbError 7}}
-                    <img class="Error" src="/assets/img/Display/Display7.png" alt="">
-                {{end}}
-                {{if eq .NbError 8}}
-                    <img class="Error" src="/assets/img/Display/Display8.png" alt="">
-                {{end}}
-                {{if eq .NbError 9}}
-                    <img class="Error" src="/assets/img/Display/Display9.png" alt="">
-                {{end}}
-                {{if eq .NbError 10}}
-                    <img class="Error" src="/assets/img/Display/Display10.png" alt="">
-                {{end}}
-                {{if eq .NbError 11}}
-                    <img class="Error" src="/assets/img/Display/Display11.png" alt="">
-                {{end}}
-            {{end}}
+            </div>
+            <div class="HP">
+                <img id="HP" src="/assets/img/HP.webp" alt="">
+                <p>x{{.Live}}</p>
+            </div>
+            <img class="Error" src="/assets/img/Display/Display0.png" alt="">
             <form action="/hangman/treatment" method="post">
                 <label for="word">Word</label>
-                <input type="text" name="word" id="word">
+                <input type="text" name="word" id="word" placeholder="Word.....">
                 <label for="letter">Letter</label>
-                <input type="text" name="letter" id="word">
+                <input type="text" name="letter" id="word" placeholder="Letter....">
                 <button type="submit">Tester</button>
             </form>
         </main>
         
         
-        <script src="" async defer></script>
+        <script src="/assets/JS/FrontJS.js" async defer></script>
     </body>
 </html>

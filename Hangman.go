@@ -18,12 +18,14 @@ var LettreError []string
 
 type Return struct {
 	NbError int
+	Live    int
 	Mot     []string
 	Error   bool
 }
 
 type Display struct {
 	NbError int
+	Live    int
 	Mot     []string
 	Try     []string
 	Error   string
@@ -39,6 +41,11 @@ type ErrorInput struct {
 	Error string
 }
 
+type EndGame struct {
+	Finish bool
+	Mot    string
+}
+
 var Word string
 var Essai []string
 
@@ -48,6 +55,7 @@ var ErrorInputWord ErrorInput = ErrorInput{""}
 var ErrorInputLetter ErrorInput = ErrorInput{""}
 
 var Result Return
+var Affichage Display
 
 func Hangman() {
 
@@ -60,6 +68,7 @@ func Hangman() {
 			return
 		}
 		Essai = []string{}
+		LosePoint = 0
 
 		Data, err := ioutil.ReadFile("./txt/Global.txt") // lire le fichier text.txt
 		if err != nil {
@@ -78,9 +87,9 @@ func Hangman() {
 		}
 
 		if LosePoint > 0 && LosePoint <= 11 {
-			Result = Return{LosePoint, ChooseWord(), true}
+			Result = Return{LosePoint, 11 - LosePoint, ChooseWord(), true}
 		} else {
-			Result = Return{LosePoint, ChooseWord(), false}
+			Result = Return{LosePoint, 11 - LosePoint, ChooseWord(), false}
 		}
 		temp.Execute(w, Result)
 	})
@@ -90,51 +99,75 @@ func Hangman() {
 
 	http.HandleFunc("/hangman/treatment", func(w http.ResponseWriter, r *http.Request) {
 
+		Affichage.Error = ""
 		if r.Method != http.MethodPost {
-			fmt.Println("toi t'a fais de la merde")
+			fmt.Println("Il y a un problème de traitement !")
 			return
 		}
+		fmt.Println(Word)
+		fmt.Println(r.FormValue("word"))
+		fmt.Println(r.FormValue("letter"))
 
-		checkValueWord, _ := regexp.MatchString("[a-zA-Z-]{1,64}$", r.FormValue("nom"))
-		checkValueLetter, _ := regexp.MatchString("[a-zA-Z-]{1,64}$", r.FormValue("prenom"))
+		checkValueWord, _ := regexp.MatchString("[a-zA-Z-]{1,64}$", r.FormValue("word"))
+		checkValueLetter, _ := regexp.MatchString("[a-zA-Z-]{1,64}$", r.FormValue("letter"))
 
-		if !checkValueWord {
-			StockageValueWord = StockageValue{"", false}
-			http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
-			return
-		}
-		if !checkValueLetter {
-			StockageValueLetter = StockageValue{"", false}
-			http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
-			return
-		}
-
-		if r.FormValue("word") == Word { //Vérifie si l'input mot correspond au mot inconnu....................................
-			StockageValueWord = StockageValue{r.FormValue("word"), true}
-			http.Redirect(w, r, "/hangman/win", http.StatusSeeOther)
-			return
-		} else if r.FormValue("word") != Word { //Si l'input mot ne l'est pas..................................................
-			Error := 0
-			for _, k := range Essai {
-				if string(k) == r.FormValue("word") { //Vérifie si on a pas déjà rentrer le mot................................
-					ErrorInputWord = ErrorInput{"C'est pas le bon mot et tu l'as déjà rentrer"}
-					http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
-					return
-				}
-				Error++
-			}
-			if Error == len(Essai) { //Enregistre le mot rentrer dans la liste des erreurs.....................................
-				Essai = append(Essai, r.FormValue("word"))
-				LosePoint += 2
-				ErrorInputWord = ErrorInput{"C'est pas le bon mot"}
+		if r.FormValue("word") != "" {
+			if !checkValueWord {
+				StockageValueWord = StockageValue{"", false}
+				fmt.Println("Il y a un problème avec l'input mot")
 				http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
 				return
 			}
 		}
-		if len(r.FormValue("letter")) == 1 { //Vérifie si il n'y a qu'un seul paramètre........................................
+		if len(r.FormValue("word")) > 1 {
+			if len(r.FormValue("word")) > len(Word) { //Vérifie si le mot est trop long..............................
+				Affichage.Error = "Le mot est trop long"
+				http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
+				return
+			} else {
+				if r.FormValue("word") == Word { //Vérifie si l'input mot correspond au mot inconnu...................
+					StockageValueWord = StockageValue{r.FormValue("word"), true}
+					http.Redirect(w, r, "/hangman/win", http.StatusSeeOther)
+					return
+				} else if r.FormValue("word") != Word { //Si l'input mot ne l'est pas.................................
+					Error := 0
+					for _, k := range Essai {
+						if string(k) == r.FormValue("word") { //Vérifie si on a pas déjà rentrer le mot...............
+							Affichage.Error = "C'est pas le bon mot et tu l'as déjà rentrer"
+							http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
+							return
+						}
+						if r.FormValue("word") != string(k) {
+							Error++
+						}
+					}
+					if Error == len(Essai) { //Enregistre le mot rentrer dans la liste des erreurs....................
+						if LosePoint >= 11 {
+							http.Redirect(w, r, "/hangman/lose", http.StatusSeeOther)
+							return
+						} else {
+							Essai = append(Essai, r.FormValue("word"))
+							LosePoint += 2
+							Affichage.Error = "C'est pas le bon mot"
+							http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
+							return
+						}
+					}
+				}
+			}
+		}
+		if r.FormValue("letter") != "" {
+			if !checkValueLetter {
+				StockageValueLetter = StockageValue{"", false}
+				fmt.Println("Il y a un problème avec l'input lettre")
+				http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
+				return
+			}
+		}
+		if len(r.FormValue("letter")) == 1 { //Vérifie si il n'y a qu'un seul paramètre.......................
 			Error := 0
 			for index, k := range Word {
-				if string(k) == r.FormValue("letter") { //Vérifie si la lettre n'est pas dans le mot inconnue..................
+				if string(k) == r.FormValue("letter") { //Vérifie si la lettre n'est pas dans le mot inconnue.
 					StockageValueLetter = StockageValue{r.FormValue("letter"), true}
 					http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
 					Inconnu[index] = r.FormValue("letter")
@@ -142,14 +175,41 @@ func Hangman() {
 				}
 				Error++
 			}
-			if Error == len(Word) {
-				Essai = append(Essai, r.FormValue("letter"))
-				
+			var mot string
+			for _, Lettre := range Inconnu {
+				mot += string(Lettre)
+			}
+			if mot == Word {
+				http.Redirect(w, r, "/hangman/win", http.StatusSeeOther)
+				return
+			}
+			if Error == len(Word) { //Si la lettre n'est pas dans le mot.......................................
+				Error := 0
+				for _, L := range Essai {
+					if r.FormValue("letter") == string(L) { //Vérifie si la lettre a déjà été rentrer..........
+						Affichage.Error = "C'est pas la bonne lettre et tu l'as déjà rentrer"
+						http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
+						return
+					}
+					if r.FormValue("letter") != string(L) {
+						Error++
+					}
+				}
+				if Error == len(Essai) {
+					if LosePoint >= 11 {
+						http.Redirect(w, r, "/hangman/lose", http.StatusSeeOther)
+						return
+					} else {
+						Affichage.Error = "La lettre n'est pas dans le mot"
+						LosePoint++
+						Essai = append(Essai, r.FormValue("letter"))
+					}
+				}
 			}
 		} else if len(r.FormValue("letter")) > 1 {
 			ErrorInputLetter = ErrorInput{"Trop de lettre !"}
 		}
-
+		http.Redirect(w, r, "/hangman/display", http.StatusSeeOther)
 	})
 	//===================================================================================================
 
@@ -161,28 +221,54 @@ func Hangman() {
 			fmt.Print("Il y a un problème de type :", err)
 			return
 		}
-		Return := Display{}    //Structure de return............................................................
-		Return.IfError = false //Renvooie qu'il n'y a pas d'erreur...........................................
-
-		fmt.Println(ErrorInputLetter)
-		fmt.Println(ErrorInputWord)
-
-		if ErrorInputLetter.Error != "" { //vérifie si il y a une erreur en lien avec l'input de lettre......
-			Return.Error = ErrorInputLetter.Error
-			Return.IfError = true
-		}
-		if ErrorInputWord.Error != "" { //vérifie si il y a une erreur en lien avec l'input de mot...........
-			Return.Error = ErrorInputWord.Error
-			Return.IfError = true
+		Affichage.IfError = false //Renvoie qu'il n'y a pas d'erreur...........................................
+		if Affichage.Error != "" {
+			Affichage.IfError = true
 		}
 
-		Return.Mot = Inconnu
-		Return.NbError = LosePoint
-		Return.Try = Essai
-		fmt.Println(Return.Mot)
-		fmt.Println(Return.Try)
-		fmt.Println(Return.NbError)
-		temp.Execute(w, Return)
+		Affichage.Mot = Inconnu
+		Affichage.Live = 11 - LosePoint
+		Affichage.NbError = LosePoint
+		Affichage.Try = Essai
+
+		temp.Execute(w, Affichage)
+	})
+
+	//===================================================================================================
+
+	//=================================================WIN===============================================
+
+	http.HandleFunc("/hangman/win", func(w http.ResponseWriter, r *http.Request) {
+		temp, err := template.ParseFiles("./template/Finish.html")
+		if err != nil {
+			fmt.Print("Il y a un problème de type : ", err)
+			return
+		}
+
+		Win := EndGame{
+			Finish: true,
+			Mot:    Word,
+		}
+
+		temp.Execute(w, Win)
+	})
+
+	//===================================================================================================
+
+	//===============================================GAME OVER===========================================
+
+	http.HandleFunc("/hangman/lose", func(w http.ResponseWriter, r *http.Request) {
+		temp, err := template.ParseFiles("./template/Finsih.html")
+		if err != nil {
+			fmt.Print("Il y a un problème de type : ", err)
+			return
+		}
+		GameOver := EndGame{
+			Finish: false,
+			Mot:    Word,
+		}
+
+		temp.Execute(w, GameOver)
 	})
 
 	//===================================================================================================

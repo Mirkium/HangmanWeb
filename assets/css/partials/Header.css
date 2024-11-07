@@ -5,6 +5,11 @@ body {
     font-weight: bold;
 }
 
+a, button {
+    all: unset;
+    cursor: pointer;
+}
+
 header {
     position:fixed;
     top: 0;
@@ -16,6 +21,7 @@ header {
     justify-content: center;
     align-items: center;
     z-index: 1;
+    transition: transform 0.3s ease;
 }
 
 #menu {
