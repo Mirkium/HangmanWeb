@@ -4,12 +4,11 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>HangmanWeb - ScoreBoard</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/assets/css/partials/Header.css">
         <link rel="stylesheet" href="/assets/css/partials/Footer.css">
-        <link rel="stylesheet" href="/assets/css/Finish.css">
     </head>
     <body>
         <header class="header">
@@ -25,19 +24,6 @@
                 </a>
             </div>
         </header>
-
-        <main>
-            {{if .Finish}}
-                <h1 id="Win">WIN</h1>
-            {{else}}
-                <h1 id="Lose">GAME OVER</h1>
-            {{end}}
-            <p>{{.Mot}}</p>
-            <div class="lien">
-                <a href="/hangman_web/game">New Game</a>
-                <a href="/hangman_web/menu">Menu</a>
-            </div>
-        </main>
         
         <script src="/assets/JS/FrontJS.js" async defer></script>
     </body>

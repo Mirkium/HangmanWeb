@@ -4,12 +4,12 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>HangmanWeb - Profil</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/assets/css/partials/Header.css">
         <link rel="stylesheet" href="/assets/css/partials/Footer.css">
-        <link rel="stylesheet" href="/assets/css/Finish.css">
+        <link rel="stylesheet" href="/assets/css/Profil.css">
     </head>
     <body>
         <header class="header">
@@ -27,15 +27,17 @@
         </header>
 
         <main>
-            {{if .Finish}}
-                <h1 id="Win">WIN</h1>
-            {{else}}
-                <h1 id="Lose">GAME OVER</h1>
-            {{end}}
-            <p>{{.Mot}}</p>
-            <div class="lien">
-                <a href="/hangman_web/game">New Game</a>
-                <a href="/hangman_web/menu">Menu</a>
+            <img src="/assets/img/profil.png" alt="">
+            <p class="Name">{{.Name}}</p>
+            <div class="game">
+                <div class="score">
+                    <p>Score :</p>
+                    <p>{{.Score}}</p>
+                </div>
+                <div class="Party">
+                    <p>Party :</p>
+                    <p>{{.NbGame}}</p>
+                </div>
             </div>
         </main>
         

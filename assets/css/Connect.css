@@ -1,0 +1,28 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+main {
+    position: absolute;
+    top: 20%;
+}
+
+form {padding: 10px;
+    background-color: antiquewhite;
+    border: solid black;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 10px 10px 30px black;
+}
+
+.support {
+    display: flex;
+    justify-content: center;
+}
+
+.support > button {
+    text-align: center;
+    border: inset black;
+}

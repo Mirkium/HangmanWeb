@@ -6,6 +6,9 @@ import (
 
 func main() {
 
+	FirstConnect = true
+
+	Menu()
 	Hangman()
 
 	fileServer := http.FileServer(http.Dir("./assets/"))

@@ -4,12 +4,12 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title></title>
+        <title>HangmanWeb - Connect</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="/assets/css/partials/Header.css">
         <link rel="stylesheet" href="/assets/css/partials/Footer.css">
-        <link rel="stylesheet" href="/assets/css/Finish.css">
+        <link rel="stylesheet" href="/assets/css/Connect.css">
     </head>
     <body>
         <header class="header">
@@ -27,17 +27,17 @@
         </header>
 
         <main>
-            {{if .Finish}}
-                <h1 id="Win">WIN</h1>
-            {{else}}
-                <h1 id="Lose">GAME OVER</h1>
-            {{end}}
-            <p>{{.Mot}}</p>
-            <div class="lien">
-                <a href="/hangman_web/game">New Game</a>
-                <a href="/hangman_web/menu">Menu</a>
-            </div>
+            <form action="/hangman_web/verif_account" method="post">
+                <label for="nom">Name : </label>
+                <input type="text" name="nom" id="nom">
+                <label for="password">Password : </label>
+                <input type="password" name="password" id="password">
+                <div class="support">
+                    <button type="submit">Connect</button>
+                </div>
+            </form>
         </main>
+        
         
         <script src="/assets/JS/FrontJS.js" async defer></script>
     </body>

@@ -12,8 +12,39 @@
         <link rel="stylesheet" href="/assets/css/Menu.css">
     </head>
     <body>
+        <header class="header">
+            <div class="lien">
+                <a href="/hangman_web/menu">Menu</a>
+                <a href="/hangman_web/scoreboard">ScoreBoard</a>
+            </div>
+            <div class="Connect">
+                <a href="/hangman_web/connect" class="connect">Sign in</a>
+                <a href="/hangman_web/register" class="register">Sign up</a>
+                <a href="/hangman_web/profil" id="profil">
+                    <img src="/assets/img/profil.png">
+                </a>
+            </div>
+        </header>
+        <main>
+            <form action="/hangman_web/treatment/txt" method="post" class="ChooseTxt">
+                <label for="name">One Piece</label>
+                <input type="hidden" name="name" value="./txt/OnePiece/OnePiece.txt">
+                <input type="image" src="/assets/img/OnePiece.webp" class="imageTxt">
+            </form>
+    
+            <form action="/hangman_web/treatment/txt" method="post" class="ChooseTxt">
+                <label for="name">English</label>
+                <input type="hidden" name="name" value="./txt/English/English.txt">
+                <input type="image" src="/assets/img/anglais.png" class="imageTxt">
+            </form>
+    
+            <form action="/hangman_web/treatment/txt" method="post" class="ChooseTxt">
+                <label for="name">Game</label>
+                <input type="hidden" name="name" value="./txt/Game/Game.txt">
+                <input type="image" src="/assets/img/Game.jpg" class="imageTxt">
+            </form>
+        </main>
         
-        
-        <script src="" async defer></script>
+        <script src="/assets/JS/FrontJS.js" async defer></script>
     </body>
 </html>
